@@ -1,0 +1,13 @@
+# เปิดใช้งาน Rewrite Engine
+RewriteEngine On
+
+# กำหนด RewriteBase
+RewriteBase /
+
+# หากไม่ใช่ไฟล์หรือโฟลเดอร์ที่มีอยู่จริง ให้ส่งต่อไปยัง index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^wiki/(.*)$ index.php?title=$1 [L,QSA]
+
+# หากเข้าเว็บไซต์แบบหน้าเปล่าๆ (Root URL) ให้โหลด index.php ทันที
+RewriteRule ^$ index.php [L]
