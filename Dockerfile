@@ -27,7 +27,7 @@ RUN a2enmod rewrite
 ENV MEDIAWIKI_VERSION=1.46.0
 ENV MEDIAWIKI_DOWNLOAD_URL=https://releases.wikimedia.org/mediawiki/1.46/mediawiki-1.46.0.tar.gz
 
-RUN curl -fSL "$MEDIAWIKI_DOWNLOAD_URL" \
+RUN curl --http1.1 -fSL "$MEDIAWIKI_DOWNLOAD_URL" \
     -o /tmp/mediawiki.tar.gz \
     && tar -xzf /tmp/mediawiki.tar.gz \
     -C /var/www/html \
