@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # =========================
 # System Dependencies
@@ -37,10 +37,11 @@ RUN a2enmod rewrite
 ENV MEDIAWIKI_VERSION=1.46.0
 ENV MEDIAWIKI_DOWNLOAD_URL=https://releases.wikimedia.org/mediawiki/1.46/mediawiki-1.46.0.tar.gz
 
-RUN curl -fSL "$MEDIAWIKI_DOWNLOAD_URL" -o /tmp/mediawiki.tar.gz \
+RUN curl -fSL "$MEDIAWIKI_DOWNLOAD_URL" \
+    -o /tmp/mediawiki.tar.gz \
     && tar -xzf /tmp/mediawiki.tar.gz \
-        -C /var/www/html \
-        --strip-components=1 \
+    -C /var/www/html \
+    --strip-components=1 \
     && rm /tmp/mediawiki.tar.gz
 
 
@@ -52,16 +53,6 @@ RUN git clone \
     --branch REL1_46 \
     https://gerrit.wikimedia.org/r/mediawiki/extensions/MobileFrontend \
     /var/www/html/extensions/MobileFrontend
-
-
-# =========================
-# MinervaNeue Mobile Skin
-# =========================
-RUN git clone \
-    --depth 1 \
-    --branch REL1_46 \
-    https://gerrit.wikimedia.org/r/mediawiki/skins/MinervaNeue \
-    /var/www/html/skins/MinervaNeue
 
 
 # =========================
@@ -94,8 +85,9 @@ EXPOSE 10000
 # Start Apache
 # =========================
 CMD sed -ri \
-        "s/Listen 80/Listen ${PORT:-10000}/g; \
-         s/<VirtualHost \\*:80>/<VirtualHost *:${PORT:-10000}>/g" \
-        /etc/apache2/ports.conf \
-        /etc/apache2/sites-available/000-default.conf \
+    "s/Listen 80/Listen ${PORT:-10000}/g" \
+    /etc/apache2/ports.conf \
+    && sed -ri \
+    "s/<VirtualHost \*:80>/<VirtualHost *:${PORT:-10000}>/g" \
+    /etc/apache2/sites-available/000-default.conf \
     && apache2-foreground
