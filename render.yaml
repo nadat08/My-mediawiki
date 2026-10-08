@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: mediawiki-app
+    env: docker
+    plan: free
+    region: frankfurt # เลือกโซนใกล้เคียง
+    envVars:
+      - key: PORT
+        value: 10000
