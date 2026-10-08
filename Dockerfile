@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpq-dev \
     curl \
+    wget \
     git \
     unzip \
     ca-certificates \
@@ -27,8 +28,7 @@ RUN a2enmod rewrite
 ENV MEDIAWIKI_VERSION=1.46.0
 ENV MEDIAWIKI_DOWNLOAD_URL=https://releases.wikimedia.org/mediawiki/1.46/mediawiki-1.46.0.tar.gz
 
-RUN curl --http1.1 -fSL "$MEDIAWIKI_DOWNLOAD_URL" \
-    -o /tmp/mediawiki.tar.gz \
+RUN wget -c --tries=5 "$MEDIAWIKI_DOWNLOAD_URL" -O /tmp/mediawiki.tar.gz \
     && tar -xzf /tmp/mediawiki.tar.gz \
     -C /var/www/html \
     --strip-components=1 \
