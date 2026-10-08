@@ -66,3 +66,11 @@ CMD sed -ri \
 
 COPY LocalSettings.php /var/www/html/LocalSettings.php
 
+RUN echo '<Directory /var/www/html/>\n\
+    AllowOverride All\n\
+</Directory>' >> /etc/apache2/apache2.conf
+
+COPY LocalSettings.php /var/www/html/LocalSettings.php
+COPY .htaccess /var/www/html/.htaccess
+
+
