@@ -63,3 +63,6 @@ CMD sed -ri \
     "s/<VirtualHost \*:80>/<VirtualHost *:${PORT:-10000}>/g" \
     /etc/apache2/sites-available/000-default.conf \
     && apache2-foreground
+
+COPY LocalSettings.php /var/www/html/LocalSettings.php
+
